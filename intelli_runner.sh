@@ -1,6 +1,13 @@
 #!/bin/bash
 #set -x
 
+#############################################################
+# Install in cron like so
+# */5 * * * * ~/bin/intelli_runner.sh
+#############################################################
+
+
+
 block=$(dash-cli getblockcount)||{ echo "dashd error getting block height.";exit 2;}
 remainder=$((($block-880648+1662) % 16616))
 run_prog=~/bin/vote_tracker.sh
