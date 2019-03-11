@@ -1,13 +1,6 @@
 #!/bin/bash
 #set -x
 
-#############################################################
-# Install in cron like so
-# */5 * * * * ~/bin/intelli_runner.sh
-#############################################################
-
-
-
 block=$(dash-cli getblockcount)||{ echo "dashd error getting block height.";exit 2;}
 remainder=$((($block-880648+1662) % 16616))
 run_prog=~/bin/vote_tracker.sh
@@ -24,6 +17,10 @@ if [ $remainder -le 10 ];then
 		sleep 3
 	done
 	"$run_prog"
+	# Create a zip file since this is the final time we run for this cycle.
+	zip -9m "DASH DAO Voting Data $(date +"%Y%m%d%H%M").zip" proposals.txt current_props.txt prop_votes.txt
+	# sleep for a long time to make sure we get passed 10 blocks and don't accidently run again.
+	sleep 3000
 	exit 0
 fi
 
